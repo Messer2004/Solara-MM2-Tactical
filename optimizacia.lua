@@ -1,5 +1,8 @@
+if setfpscap then setfpscap(240) end
+
 local Lighting = game:GetService("Lighting")
 local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
 
 Lighting.GlobalShadows = false
 Lighting.FogEnd = 9e9
@@ -12,6 +15,18 @@ if terrain then
     terrain.Decoration = false
     local clouds = terrain:FindFirstChildOfClass("Clouds")
     if clouds then clouds:Destroy() end
+end
+
+local cam = Workspace.CurrentCamera
+if cam then
+    cam:GetPropertyChangedSignal("CFrame"):Connect(function()
+        local plr = Players.LocalPlayer
+        if plr and plr.Character and plr.Character:FindFirstChild("Humanoid") then
+            if plr.Character.Humanoid.Health > 0 then
+                cam.FieldOfView = 70 
+            end
+        end
+    end)
 end
 
 local function optimize(v)
